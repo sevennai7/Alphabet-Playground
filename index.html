@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Alphabet Playground</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      margin-top: 20px;
+      font-size: 2rem;
+      letter-spacing: 2px;
+    }
+
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(6, 60px);
+      grid-gap: 15px;
+      margin-top: 30px;
+    }
+
+    .letter {
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #222;
+      border-radius: 10px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .letter:hover {
+      background: #444;
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+
+<h1>ALPHABET PLAYGROUND</h1>
+<div id="grid"></div>
+
+<script>
+  const effects = {
+    A: () => {
+      console.log("A = Ascend");
+      document.body.style.transform = "translateY(-20px)";
+      setTimeout(() => document.body.style.transform = "", 500);
+    },
+    B: () => {
+      console.log("B = Bounce");
+      const el = document.getElementById("grid");
+      el.style.transform = "translateY(-20px)";
+      setTimeout(() => el.style.transform = "translateY(20px)", 100);
+      setTimeout(() => el.style.transform = "", 200);
+    },
+    C: () => {
+      console.log("C = Claustrophobic");
+      document.body.style.padding = "50px";
+      setTimeout(() => document.body.style.padding = "", 600);
+    },
+    D: () => {
+      console.log("D = Disappear");
+      const grid = document.getElementById("grid");
+      grid.style.opacity = "0";
+      setTimeout(() => grid.style.opacity = "1", 800);
+    },
+    // Add more effects here...
+  };
+
+  const grid = document.getElementById("grid");
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+  letters.forEach(letter => {
+    const div = document.createElement("div");
+    div.className = "letter";
+    div.textContent = letter;
+    div.onclick = () => {
+      if (effects[letter]) {
+        effects[letter]();
+      } else {
+        console.log(`${letter} = [UNDEFINED EFFECT]`);
+      }
+    };
+    grid.appendChild(div);
+  });
+</script>
+
+</body>
+</html>
