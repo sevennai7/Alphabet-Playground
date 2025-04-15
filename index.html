@@ -133,21 +133,14 @@
       setTimeout(() => el.classList.remove("bounce"), 500);
     },
     C: (textEl, boxEl) => {
-      // Force reflow helper to reset animation
       const forceReflow = (el) => void el.offsetWidth;
-
-      // Reset classes if already present
       boxEl.classList.remove("claustro-box");
       textEl.classList.remove("tremble-text");
-
       forceReflow(boxEl);
       forceReflow(textEl);
-
-      // Re-apply animations
       boxEl.classList.add("claustro-box");
       textEl.classList.add("tremble-text");
 
-      // Create and animate tear (centered on the letter)
       const tear = document.createElement("div");
       tear.className = "tear";
       tear.style.animationDuration = `${0.6 + Math.random() * 0.4}s`;
@@ -180,13 +173,14 @@
     div.addEventListener("click", () => {
       if (effects[letter]) {
         if (letter === "C") {
-          effects.C(span, div); // pass both text and box for C
+          effects.C(span, div);
         } else {
           effects[letter](span);
         }
       } else {
-        console.log(`${letter} has no effect yet.`);
-        alert(`${letter} has no effect yet.`);
+        const msg = `⚠️ Letter "${letter}" has no effect yet. Add it soon!`;
+        console.log(msg);
+        alert(msg);
       }
     });
 
