@@ -94,21 +94,20 @@
     }
 
     .tear {
-  position: absolute;
-  bottom: 5px;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #00aaff;
-  opacity: 1;
-  animation: tearFall 0.8s ease forwards;
-}
+      position: absolute;
+      bottom: 5px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #00aaff;
+      opacity: 1;
+      animation: tearFall 0.8s ease forwards;
+    }
 
-@keyframes tearFall {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(20px); opacity: 0; }
-}
-    
+    @keyframes tearFall {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(20px); opacity: 0; }
+    }
   </style>
 </head>
 <body>
@@ -130,23 +129,32 @@
       setTimeout(() => el.classList.remove("bounce"), 500);
     },
     C: (textEl, boxEl) => {
-      // Shrink box
-      boxEl.classList.add("claustro-box");
+      // Force reflow helper to reset animation
+      const forceReflow = (el) => void el.offsetWidth;
 
-      // Tremble letter
+      // Reset classes if already present
+      boxEl.classList.remove("claustro-box");
+      textEl.classList.remove("tremble-text");
+
+      forceReflow(boxEl);
+      forceReflow(textEl);
+
+      // Re-apply animations
+      boxEl.classList.add("claustro-box");
       textEl.classList.add("tremble-text");
 
-      // Cry
+      // Create and animate tear
       const tear = document.createElement("div");
-tear.className = "tear";
-tear.style.left = `${Math.floor(Math.random() * 40) + 5}px`; // between 5–45px
-boxEl.appendChild(tear);
-      // Clean up
+      tear.className = "tear";
+      tear.style.left = `${Math.floor(Math.random() * 40) + 5}px`;
+      tear.style.animationDuration = `${0.6 + Math.random() * 0.4}s`;
+      boxEl.appendChild(tear);
+
       setTimeout(() => {
         boxEl.classList.remove("claustro-box");
         textEl.classList.remove("tremble-text");
         tear.remove();
-      }, 900);
+      }, 1000);
     },
     D: (el) => {
       el.style.transition = "opacity 0.5s ease";
@@ -169,7 +177,7 @@ boxEl.appendChild(tear);
     div.addEventListener("click", () => {
       if (effects[letter]) {
         if (letter === "C") {
-          effects.C(span, div); // pass both elements
+          effects.C(span, div); // pass both text and box for C
         } else {
           effects[letter](span);
         }
