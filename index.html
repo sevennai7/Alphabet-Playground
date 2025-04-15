@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Letter A – Chaos v2.0</title>
+  <title>Letter A – Chaos v2.1 - Testing A for Alphabet Playground</title>
   <style>
     * { box-sizing: border-box; }
 
@@ -70,11 +70,12 @@
       pointer-events: none;
       animation: burst 0.5s ease forwards;
       z-index: 10;
+      transform: translate(-50%, -50%);
     }
 
     @keyframes burst {
-      0% { transform: scale(0.5); opacity: 1; }
-      100% { transform: scale(1.8); opacity: 0; }
+      0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(1.8); opacity: 0; }
     }
 
     .fade-in {
@@ -94,33 +95,32 @@
 <script>
 const letter = document.getElementById("letterA");
 
-// Particle trail every X ms during ascent
-function startParticleTrail(el) {
-  let y = 0;
+function createParticleTrail(el) {
+  let count = 0;
   const interval = setInterval(() => {
     const p = document.createElement("div");
     p.className = "particle";
     p.style.left = "50%";
     p.style.top = "50%";
-    p.style.transform = `translate(-50%, -50%)`;
+    p.style.transform = "translate(-50%, -50%)";
     el.appendChild(p);
     setTimeout(() => p.remove(), 700);
-    y++;
-    if (y > 20) clearInterval(interval);
-  }, 50);
+    if (++count >= 24) clearInterval(interval);
+  }, 40);
 }
 
-// Centered explosion using bounding box
-function createCenteredBurst(el) {
+function createBurstOver(el) {
   const burst = document.createElement("div");
   burst.className = "burst";
 
+  // Position the burst OVER the element after animation
   const rect = el.getBoundingClientRect();
   const scrollTop = window.scrollY || document.documentElement.scrollTop;
+  const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
 
-  burst.style.position = "fixed";
-  burst.style.left = `${rect.left + rect.width / 2 - 60}px`;
-  burst.style.top = `${rect.top + rect.height / 2 - 140}px`;
+  burst.style.position = "absolute";
+  burst.style.left = rect.left + rect.width / 2 + scrollLeft + "px";
+  burst.style.top = rect.top + rect.height / 2 - 140 + scrollTop + "px"; // Matches -140px float
 
   document.body.appendChild(burst);
   setTimeout(() => burst.remove(), 600);
@@ -128,10 +128,10 @@ function createCenteredBurst(el) {
 
 letter.addEventListener("click", () => {
   letter.classList.add("ascend");
-  startParticleTrail(letter);
+  createParticleTrail(letter);
 
   setTimeout(() => {
-    createCenteredBurst(letter);
+    createBurstOver(letter);
   }, 700);
 
   setTimeout(() => {
