@@ -37,10 +37,14 @@
       align-items: center;
       justify-content: center;
       border-radius: 10px;
-      font-size: 1.5rem;
       cursor: pointer;
-      transition: transform 0.3s ease, opacity 0.3s ease;
+      transition: background 0.3s ease;
       user-select: none;
+    }
+
+    .letter span {
+      font-size: 1.5rem;
+      transition: transform 0.3s ease;
     }
 
     .letter:hover {
@@ -111,14 +115,19 @@
   letters.forEach(letter => {
     const div = document.createElement("div");
     div.className = "letter";
-    div.textContent = letter;
+
+    const span = document.createElement("span");
+    span.textContent = letter;
+    div.appendChild(span);
+
     div.addEventListener("click", () => {
       if (effects[letter]) {
-        effects[letter](div);
+        effects[letter](span); // pass in the actual letter text element
       } else {
         console.log(`${letter} has no effect yet.`);
       }
     });
+
     grid.appendChild(div);
   });
 </script>
