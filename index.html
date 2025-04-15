@@ -39,9 +39,10 @@
       border-radius: 10px;
       cursor: pointer;
       position: relative;
+      user-select: none;
     }
 
-    .letter span {
+    .letter-text {
       font-size: 1.5rem;
       transition: transform 0.3s ease;
     }
@@ -63,7 +64,7 @@
 
     @keyframes claustrophobic {
       0% { transform: scale(1); }
-      30% { transform: scale(0.2); }
+      30% { transform: scale(0.3); }
       60% { transform: scale(0.1); }
       100% { transform: scale(1); }
     }
@@ -89,7 +90,7 @@
     }
 
     .trembling {
-      animation: tremble 0.15s infinite;
+      animation: tremble 0.1s infinite;
     }
 
     .tear {
@@ -124,20 +125,22 @@
       el.classList.add("bounce");
       setTimeout(() => el.classList.remove("bounce"), 500);
     },
-    C: (el) => {
-      // claustrophobic squish
-      el.classList.add("claustrophobic");
-      el.classList.add("trembling");
+    C: (textEl, boxEl) => {
+      // Squish the text
+      textEl.classList.add("claustrophobic");
 
-      // cry animation (tear drop)
+      // Shake the whole tile
+      boxEl.classList.add("trembling");
+
+      // Crying tear emoji
       const tear = document.createElement("div");
       tear.className = "tear";
       tear.textContent = "💧";
-      el.parentElement.appendChild(tear);
+      boxEl.appendChild(tear);
 
       setTimeout(() => {
-        el.classList.remove("claustrophobic");
-        el.classList.remove("trembling");
+        textEl.classList.remove("claustrophobic");
+        boxEl.classList.remove("trembling");
         tear.remove();
       }, 900);
     },
@@ -155,12 +158,17 @@
     div.className = "letter";
 
     const span = document.createElement("span");
+    span.className = "letter-text";
     span.textContent = letter;
     div.appendChild(span);
 
     div.addEventListener("click", () => {
       if (effects[letter]) {
-        effects[letter](span);
+        if (letter === "C") {
+          effects.C(span, div); // pass both text and box
+        } else {
+          effects[letter](span);
+        }
       } else {
         console.log(`${letter} has no effect yet.`);
       }
