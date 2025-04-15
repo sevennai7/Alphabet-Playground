@@ -118,10 +118,10 @@ function createBurstOver(el) {
   const scrollTop = window.scrollY || document.documentElement.scrollTop;
   const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
 
-  burst.style.position = "center";
+  burst.style.position = "fixed";
   burst.style.left = rect.left + rect.width / 2 + scrollLeft + "px";
-  burst.style.top = rect.top + rect.height / 2 - 140 + scrollTop + "px"; // Matches -140px float
-
+  burst.style.top = rect.top + rect.height / 2 - 140 + scrollTop + "px";
+  
   document.body.appendChild(burst);
   setTimeout(() => burst.remove(), 600);
 }
