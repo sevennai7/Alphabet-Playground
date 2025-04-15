@@ -94,16 +94,20 @@
     }
 
     .tear {
-      position: absolute;
-      bottom: 5px;
-      font-size: 0.8rem;
-      opacity: 1;
-      animation: tearFall 0.8s ease forwards;
-    }
+  position: absolute;
+  bottom: 5px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00aaff;
+  opacity: 1;
+  animation: tearFall 0.8s ease forwards;
+}
 
-    @keyframes tearFall {
-      0% { transform: translateY(0); opacity: 1; }
-      100% { transform: translateY(20px); opacity: 0; }
+@keyframes tearFall {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(20px); opacity: 0; }
+}
     }
   </style>
 </head>
@@ -134,10 +138,9 @@
 
       // Cry
       const tear = document.createElement("div");
-      tear.className = "tear";
-      tear.textContent = "💧";
-      boxEl.appendChild(tear);
-
+tear.className = "tear";
+tear.style.left = `${Math.floor(Math.random() * 40) + 5}px`; // between 5–45px
+boxEl.appendChild(tear);
       // Clean up
       setTimeout(() => {
         boxEl.classList.remove("claustro-box");
