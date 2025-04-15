@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Letter A – Chaos Edition</title>
+  <title>Letter A – Chaos v2.0</title>
   <style>
     * { box-sizing: border-box; }
 
@@ -14,6 +14,7 @@
       align-items: center;
       justify-content: center;
       font-family: sans-serif;
+      overflow: hidden;
     }
 
     .letter {
@@ -31,7 +32,7 @@
       overflow: visible;
     }
 
-    .ascend {
+    .letter.ascend {
       animation: ascend 1.2s ease forwards;
     }
 
@@ -48,81 +49,97 @@
       background: gold;
       border-radius: 50%;
       opacity: 0.9;
-      animation: particle-fly 0.7s ease forwards;
+      pointer-events: none;
+      animation: fly 0.6s linear forwards;
     }
 
-    @keyframes particle-fly {
+    @keyframes fly {
       to {
-        transform: translate(var(--x), var(--y)) scale(0.1);
+        transform: translateY(30px) scale(0.2);
         opacity: 0;
       }
     }
 
     .burst {
       position: absolute;
-      width: 100px;
-      height: 100px;
+      width: 120px;
+      height: 120px;
       background: radial-gradient(circle, white, gold, transparent);
       border-radius: 50%;
-      opacity: 0.9;
+      opacity: 0.8;
       pointer-events: none;
-      animation: burst-fade 0.5s ease forwards;
+      animation: burst 0.5s ease forwards;
       z-index: 10;
     }
 
-    @keyframes burst-fade {
-      0% { transform: scale(0.3); opacity: 1; }
-      100% { transform: scale(1.5); opacity: 0; }
+    @keyframes burst {
+      0% { transform: scale(0.5); opacity: 1; }
+      100% { transform: scale(1.8); opacity: 0; }
+    }
+
+    .fade-in {
+      animation: fadeBack 0.4s ease forwards;
+    }
+
+    @keyframes fadeBack {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
 
-  <h1>hello</h1>
 <div class="letter" id="letterA">A</div>
 
 <script>
 const letter = document.getElementById("letterA");
 
-function createParticle(x, y) {
-  const p = document.createElement("div");
-  p.className = "particle";
-  p.style.left = "40px";
-  p.style.top = "40px";
-  const angle = Math.random() * 2 * Math.PI;
-  const radius = 30 + Math.random() * 30;
-  const dx = Math.cos(angle) * radius + "px";
-  const dy = Math.sin(angle) * radius + "px";
-  p.style.setProperty("--x", dx);
-  p.style.setProperty("--y", dy);
-  letter.appendChild(p);
-  setTimeout(() => p.remove(), 700);
+// Particle trail every X ms during ascent
+function startParticleTrail(el) {
+  let y = 0;
+  const interval = setInterval(() => {
+    const p = document.createElement("div");
+    p.className = "particle";
+    p.style.left = "50%";
+    p.style.top = "50%";
+    p.style.transform = `translate(-50%, -50%)`;
+    el.appendChild(p);
+    setTimeout(() => p.remove(), 700);
+    y++;
+    if (y > 20) clearInterval(interval);
+  }, 50);
 }
 
-function createBurst() {
-  const b = document.createElement("div");
-  b.className = "burst";
-  b.style.left = "-10px";
-  b.style.top = "-140px";
-  letter.appendChild(b);
-  setTimeout(() => b.remove(), 500);
+// Centered explosion using bounding box
+function createCenteredBurst(el) {
+  const burst = document.createElement("div");
+  burst.className = "burst";
+
+  const rect = el.getBoundingClientRect();
+  const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+  burst.style.position = "fixed";
+  burst.style.left = `${rect.left + rect.width / 2 - 60}px`;
+  burst.style.top = `${rect.top + rect.height / 2 - 140}px`;
+
+  document.body.appendChild(burst);
+  setTimeout(() => burst.remove(), 600);
 }
 
 letter.addEventListener("click", () => {
   letter.classList.add("ascend");
-
-  for (let i = 0; i < 20; i++) {
-    setTimeout(() => createParticle(40, 40), i * 20);
-  }
+  startParticleTrail(letter);
 
   setTimeout(() => {
-    createBurst();
+    createCenteredBurst(letter);
   }, 700);
 
   setTimeout(() => {
     letter.classList.remove("ascend");
-    letter.style.opacity = "1";
-    letter.style.transform = "translateY(0)";
+    letter.classList.add("fade-in");
+    setTimeout(() => {
+      letter.classList.remove("fade-in");
+    }, 400);
   }, 1500);
 });
 </script>
