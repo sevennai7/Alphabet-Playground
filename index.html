@@ -53,6 +53,7 @@
       background: #333;
     }
 
+    /* A-D Animations */
     @keyframes ascend {
       0% { transform: translateY(0); opacity: 1; }
       100% { transform: translateY(-100px); opacity: 0; }
@@ -79,21 +80,10 @@
       100% { transform: scale(1); }
     }
 
-    .ascend {
-      animation: ascend 0.6s ease forwards;
-    }
-
-    .bounce {
-      animation: bounce 0.4s ease;
-    }
-
-    .claustro-box {
-      animation: claustro-shrink 0.6s ease;
-    }
-
-    .tremble-text {
-      animation: tremble 0.1s infinite;
-    }
+    .ascend { animation: ascend 0.6s ease forwards; }
+    .bounce { animation: bounce 0.4s ease; }
+    .claustro-box { animation: claustro-shrink 0.6s ease; }
+    .tremble-text { animation: tremble 0.1s infinite; }
 
     .tear {
       position: absolute;
@@ -112,6 +102,65 @@
       0% { transform: translate(-50%, 0); opacity: 1; }
       100% { transform: translate(-50%, 20px); opacity: 0; }
     }
+
+    /* E to L animations */
+    @keyframes elevate {
+      0% { transform: translateY(0); opacity: 1; color: white; }
+      50% { transform: translateY(-20px); color: gold; }
+      100% { transform: translateY(0); color: #fff700; }
+    }
+
+    @keyframes frustration {
+      0% { transform: rotate(0); color: white; }
+      25% { transform: rotate(5deg); color: red; }
+      50% { transform: rotate(-5deg); }
+      75% { transform: rotate(5deg); }
+      100% { transform: rotate(0); }
+    }
+
+    @keyframes gravity {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(60px); }
+    }
+
+    @keyframes hurricane {
+      0% { transform: rotate(0); }
+      100% { transform: rotate(720deg); }
+    }
+
+    @keyframes icy {
+      0% { color: white; }
+      50% { color: cyan; }
+      100% { color: lightblue; }
+    }
+
+    @keyframes jump {
+      0% { transform: translateY(0); }
+      30% { transform: translateY(-40px); }
+      100% { transform: translateY(0); }
+    }
+
+    @keyframes kaleido {
+      0% { transform: rotate(0) scale(1); color: white; }
+      25% { transform: rotate(90deg) scale(1.5); color: violet; }
+      50% { transform: rotate(180deg) scale(0.8); color: cyan; }
+      75% { transform: rotate(270deg) scale(1.2); color: lime; }
+      100% { transform: rotate(360deg) scale(1); color: white; }
+    }
+
+    @keyframes spiral {
+      0% { transform: rotate(0) scale(1); }
+      100% { transform: rotate(1080deg) scale(0); opacity: 0; }
+    }
+
+    .elevate { animation: elevate 0.6s ease; }
+    .frustrate { animation: frustration 0.6s ease; }
+    .gravity { animation: gravity 0.5s ease forwards; }
+    .hurricane { animation: hurricane 1s linear; }
+    .icy { animation: icy 1s ease; }
+    .jump { animation: jump 0.4s ease; }
+    .kaleido { animation: kaleido 1s ease; }
+    .spiral { animation: spiral 1s ease forwards; }
   </style>
 </head>
 <body>
@@ -158,6 +207,45 @@
       setTimeout(() => {
         el.style.opacity = "1";
       }, 1000);
+    },
+    E: (el) => {
+      el.classList.add("elevate");
+      setTimeout(() => el.classList.remove("elevate"), 700);
+    },
+    F: (el) => {
+      el.classList.add("frustrate");
+      setTimeout(() => el.classList.remove("frustrate"), 600);
+    },
+    G: (el) => {
+      el.classList.add("gravity");
+      setTimeout(() => {
+        el.classList.remove("gravity");
+        el.style.transform = "translateY(0)";
+      }, 800);
+    },
+    H: (el) => {
+      el.classList.add("hurricane");
+      setTimeout(() => el.classList.remove("hurricane"), 1000);
+    },
+    I: (el) => {
+      el.classList.add("icy");
+      setTimeout(() => el.classList.remove("icy"), 1000);
+    },
+    J: (el) => {
+      el.classList.add("jump");
+      setTimeout(() => el.classList.remove("jump"), 500);
+    },
+    K: (el) => {
+      el.classList.add("kaleido");
+      setTimeout(() => el.classList.remove("kaleido"), 1000);
+    },
+    L: (el) => {
+      el.classList.add("spiral");
+      setTimeout(() => {
+        el.classList.remove("spiral");
+        el.style.opacity = "1";
+        el.style.transform = "rotate(0) scale(1)";
+      }, 1100);
     }
   };
 
