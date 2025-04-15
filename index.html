@@ -2,8 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Alphabet Playground</title>
+  <title>Alphabet Playground (E to L Edition)</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       background: #111;
@@ -40,235 +44,148 @@
       cursor: pointer;
       position: relative;
       user-select: none;
-      transition: transform 0.3s ease;
     }
 
     .letter-text {
       font-size: 1.5rem;
       position: relative;
       display: inline-block;
+      transition: all 0.3s ease;
     }
 
-    .letter:hover {
-      background: #333;
+    /* === EFFECT ANIMATIONS === */
+    @keyframes evolve-glow {
+      0%   { transform: scale(1); color: white; }
+      50%  { transform: scale(1.4); color: gold; }
+      100% { transform: scale(1); color: white; }
     }
 
-    /* Animations */
-    @keyframes ascend {
-      0% { transform: translateY(0); opacity: 1; }
-      100% { transform: translateY(-100px); opacity: 0; }
+    @keyframes angry-shake {
+      0%, 100% { transform: rotate(0); }
+      25% { transform: rotate(5deg); }
+      75% { transform: rotate(-5deg); }
     }
 
-    @keyframes bounce {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-20px); }
+    @keyframes gravity-fall {
+      0%   { transform: translateY(0); }
+      90%  { transform: translateY(80px); }
       100% { transform: translateY(0); }
     }
 
-    @keyframes tremble {
-      0% { transform: translate(0, 0); }
-      25% { transform: translate(-1px, 1px); }
-      50% { transform: translate(1px, -1px); }
-      75% { transform: translate(-1px, 0); }
-      100% { transform: translate(0, 1px); }
+    @keyframes hurricane-spin {
+      0%   { transform: rotate(0); }
+      100% { transform: rotate(1080deg); }
     }
 
-    @keyframes claustro-shrink {
-      0% { transform: scale(1); }
-      30% { transform: scale(0.3); }
-      60% { transform: scale(0.1); }
-      100% { transform: scale(1); }
-    }
-
-    @keyframes tearFall {
-      0% { transform: translate(-50%, 0); opacity: 1; }
-      100% { transform: translate(-50%, 20px); opacity: 0; }
-    }
-
-    @keyframes elevate {
-      0% { transform: translateY(0); color: white; }
-      50% { transform: translateY(-20px); color: gold; }
-      100% { transform: translateY(0); color: #fff700; }
-    }
-
-    @keyframes frustration {
-      0% { transform: rotate(0); color: white; }
-      25% { transform: rotate(5deg); color: red; }
-      50% { transform: rotate(-5deg); }
-      100% { transform: rotate(0); }
-    }
-
-    @keyframes gravity {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(60px); }
-    }
-
-    @keyframes hurricane {
-      0% { transform: rotate(0); }
-      100% { transform: rotate(720deg); }
-    }
-
-    @keyframes icy {
-      0% { color: white; }
-      50% { color: cyan; }
+    @keyframes freeze {
+      0%   { color: white; }
+      50%  { color: cyan; }
       100% { color: lightblue; }
     }
 
-    @keyframes jump {
-      0% { transform: translateY(0); }
-      30% { transform: translateY(-40px); }
+    @keyframes jumpy {
+      0%   { transform: translateY(0); }
+      30%  { transform: translateY(-50px); }
       100% { transform: translateY(0); }
     }
 
     @keyframes kaleido {
-      0% { transform: rotate(0) scale(1); color: white; }
-      25% { transform: rotate(90deg) scale(1.5); color: violet; }
-      50% { transform: rotate(180deg) scale(0.8); color: cyan; }
-      75% { transform: rotate(270deg) scale(1.2); color: lime; }
+      0%   { transform: rotate(0) scale(1); color: white; }
+      25%  { transform: rotate(90deg) scale(1.5); color: violet; }
+      50%  { transform: rotate(180deg) scale(0.8); color: cyan; }
+      75%  { transform: rotate(270deg) scale(1.2); color: lime; }
       100% { transform: rotate(360deg) scale(1); color: white; }
     }
 
-    @keyframes spiral {
-      0% { transform: rotate(0) scale(1); }
-      100% { transform: rotate(1080deg) scale(0); opacity: 0; }
+    @keyframes spiral-fall {
+      0%   { transform: rotate(0) scale(1); }
+      100% { transform: rotate(1440deg) scale(0); opacity: 0; }
     }
 
-    .ascend { animation: ascend 0.6s ease forwards; }
-    .bounce { animation: bounce 0.4s ease; }
-    .claustro-box { animation: claustro-shrink 0.6s ease; }
-    .tremble-text { animation: tremble 0.1s infinite; }
-    .elevate { animation: elevate 0.6s ease; }
-    .frustrate { animation: frustration 0.6s ease; }
-    .gravity { animation: gravity 0.5s ease forwards; }
-    .hurricane { animation: hurricane 1s linear; }
-    .icy { animation: icy 1s ease; }
-    .jump { animation: jump 0.4s ease; }
-    .kaleido { animation: kaleido 1s ease; }
-    .spiral { animation: spiral 1s ease forwards; }
-
-    .tear {
-      position: absolute;
-      bottom: -4px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #00aaff;
-      opacity: 1;
-      animation: tearFall 0.8s ease forwards;
-    }
+    /* === CLASS MAPPINGS === */
+    .evolve-glow   { animation: evolve-glow 1s ease; }
+    .angry-shake   { animation: angry-shake 0.4s ease; color: red; }
+    .gravity-fall  { animation: gravity-fall 0.5s ease; }
+    .hurricane-spin{ animation: hurricane-spin 1s ease-in-out; }
+    .icy-freeze    { animation: freeze 1.2s ease; }
+    .jumpy-jump    { animation: jumpy 0.5s ease; }
+    .kaleido-burst { animation: kaleido 1s ease; }
+    .spiral-fall   { animation: spiral-fall 1s ease forwards; }
   </style>
 </head>
 <body>
 
-<h1>ALPHABET PLAYGROUND</h1>
-<div id="grid"></div>
+  <h1>ALPHABET PLAYGROUND</h1>
+  <div id="grid"></div>
 
-<script>
-  const grid = document.getElementById("grid");
-  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+  <script>
+    const grid = document.getElementById("grid");
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
-  const effects = {
-    A: (el) => {
-      el.classList.add("ascend");
-      setTimeout(() => el.classList.remove("ascend"), 700);
-    },
-    B: (el) => {
-      el.classList.add("bounce");
-      setTimeout(() => el.classList.remove("bounce"), 500);
-    },
-    C: (textEl, boxEl) => {
-      const forceReflow = (el) => void el.offsetWidth;
-      boxEl.classList.remove("claustro-box");
-      textEl.classList.remove("tremble-text");
-      forceReflow(boxEl);
-      forceReflow(textEl);
-      boxEl.classList.add("claustro-box");
-      textEl.classList.add("tremble-text");
-
-      const tear = document.createElement("div");
-      tear.className = "tear";
-      tear.style.animationDuration = `${0.6 + Math.random() * 0.4}s`;
-      textEl.appendChild(tear);
-
-      setTimeout(() => {
-        boxEl.classList.remove("claustro-box");
-        textEl.classList.remove("tremble-text");
-        tear.remove();
-      }, 1000);
-    },
-    D: (el) => {
-      el.style.transition = "opacity 0.5s ease";
-      el.style.opacity = "0";
-      setTimeout(() => {
-        el.style.opacity = "1";
-      }, 1000);
-    },
-    E: (el) => {
-      el.classList.add("elevate");
-      setTimeout(() => el.classList.remove("elevate"), 700);
-    },
-    F: (el) => {
-      el.classList.add("frustrate");
-      setTimeout(() => el.classList.remove("frustrate"), 600);
-    },
-    G: (el) => {
-      el.classList.add("gravity");
-      setTimeout(() => {
-        el.classList.remove("gravity");
-        el.style.transform = "translateY(0)";
-      }, 800);
-    },
-    H: (el) => {
-      el.classList.add("hurricane");
-      setTimeout(() => el.classList.remove("hurricane"), 1000);
-    },
-    I: (el) => {
-      el.classList.add("icy");
-      setTimeout(() => el.classList.remove("icy"), 1000);
-    },
-    J: (el) => {
-      el.classList.add("jump");
-      setTimeout(() => el.classList.remove("jump"), 500);
-    },
-    K: (el) => {
-      el.classList.add("kaleido");
-      setTimeout(() => el.classList.remove("kaleido"), 1000);
-    },
-    L: (el) => {
-      el.classList.add("spiral");
-      setTimeout(() => {
-        el.classList.remove("spiral");
-        el.style.opacity = "1";
-        el.style.transform = "rotate(0) scale(1)";
-      }, 1100);
-    }
-  };
-
-  letters.forEach(letter => {
-    const div = document.createElement("div");
-    div.className = "letter";
-
-    const span = document.createElement("span");
-    span.className = "letter-text";
-    span.textContent = letter;
-    div.appendChild(span);
-
-    div.addEventListener("click", () => {
-      const effect = effects[letter];
-      if (effect) {
-        effect(span, div); // all effects now accept both span and div
-      } else {
-        const msg = `⚠️ Letter "${letter}" has no effect yet. Add it soon!`;
-        console.log(msg);
-        alert(msg);
+    const effects = {
+      E: (el) => {
+        el.textContent = "Æ";
+        el.classList.add("evolve-glow");
+        setTimeout(() => {
+          el.classList.remove("evolve-glow");
+          el.textContent = "E";
+        }, 1000);
+      },
+      F: (el) => {
+        el.classList.add("angry-shake");
+        setTimeout(() => el.classList.remove("angry-shake"), 600);
+      },
+      G: (el) => {
+        el.classList.add("gravity-fall");
+        setTimeout(() => el.classList.remove("gravity-fall"), 600);
+      },
+      H: (el) => {
+        el.classList.add("hurricane-spin");
+        setTimeout(() => el.classList.remove("hurricane-spin"), 1000);
+      },
+      I: (el) => {
+        el.classList.add("icy-freeze");
+        setTimeout(() => el.classList.remove("icy-freeze"), 1200);
+      },
+      J: (el) => {
+        el.classList.add("jumpy-jump");
+        setTimeout(() => el.classList.remove("jumpy-jump"), 500);
+      },
+      K: (el) => {
+        el.classList.add("kaleido-burst");
+        setTimeout(() => el.classList.remove("kaleido-burst"), 1000);
+      },
+      L: (el) => {
+        el.classList.add("spiral-fall");
+        setTimeout(() => {
+          el.classList.remove("spiral-fall");
+          el.style.opacity = "1";
+          el.style.transform = "rotate(0) scale(1)";
+        }, 1100);
       }
-    });
+    };
 
-    grid.appendChild(div);
-  });
-</script>
+    letters.forEach(letter => {
+      const div = document.createElement("div");
+      div.className = "letter";
+
+      const span = document.createElement("span");
+      span.className = "letter-text";
+      span.textContent = letter;
+      div.appendChild(span);
+
+      div.addEventListener("click", () => {
+        const effect = effects[letter];
+        if (effect) {
+          effect(span, div);
+        } else {
+          alert(`Letter "${letter}" has no effect yet.`);
+        }
+      });
+
+      grid.appendChild(div);
+    });
+  </script>
 
 </body>
 </html>
