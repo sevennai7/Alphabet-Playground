@@ -45,6 +45,8 @@
 
     .letter-text {
       font-size: 1.5rem;
+      position: relative;
+      display: inline-block;
     }
 
     .letter:hover {
@@ -95,7 +97,9 @@
 
     .tear {
       position: absolute;
-      bottom: 5px;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
       width: 6px;
       height: 6px;
       border-radius: 50%;
@@ -105,8 +109,8 @@
     }
 
     @keyframes tearFall {
-      0% { transform: translateY(0); opacity: 1; }
-      100% { transform: translateY(20px); opacity: 0; }
+      0% { transform: translate(-50%, 0); opacity: 1; }
+      100% { transform: translate(-50%, 20px); opacity: 0; }
     }
   </style>
 </head>
@@ -143,12 +147,11 @@
       boxEl.classList.add("claustro-box");
       textEl.classList.add("tremble-text");
 
-      // Create and animate tear
+      // Create and animate tear (centered on the letter)
       const tear = document.createElement("div");
       tear.className = "tear";
-      tear.style.left = `${Math.floor(Math.random() * 40) + 5}px`;
       tear.style.animationDuration = `${0.6 + Math.random() * 0.4}s`;
-      boxEl.appendChild(tear);
+      textEl.appendChild(tear);
 
       setTimeout(() => {
         boxEl.classList.remove("claustro-box");
@@ -183,6 +186,7 @@
         }
       } else {
         console.log(`${letter} has no effect yet.`);
+        alert(console.log);
       }
     });
 
