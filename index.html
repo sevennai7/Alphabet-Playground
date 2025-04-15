@@ -38,8 +38,7 @@
       justify-content: center;
       border-radius: 10px;
       cursor: pointer;
-      transition: background 0.3s ease;
-      user-select: none;
+      position: relative;
     }
 
     .letter span {
@@ -64,8 +63,17 @@
 
     @keyframes claustrophobic {
       0% { transform: scale(1); }
-      50% { transform: scale(0.1); }
+      30% { transform: scale(0.2); }
+      60% { transform: scale(0.1); }
       100% { transform: scale(1); }
+    }
+
+    @keyframes tremble {
+      0% { transform: translate(0, 0); }
+      25% { transform: translate(-1px, 1px); }
+      50% { transform: translate(1px, -1px); }
+      75% { transform: translate(-1px, 0); }
+      100% { transform: translate(0, 1px); }
     }
 
     .ascend {
@@ -77,7 +85,24 @@
     }
 
     .claustrophobic {
-      animation: claustrophobic 0.5s ease;
+      animation: claustrophobic 0.6s ease;
+    }
+
+    .trembling {
+      animation: tremble 0.15s infinite;
+    }
+
+    .tear {
+      position: absolute;
+      bottom: 5px;
+      font-size: 0.8rem;
+      opacity: 1;
+      animation: tearFall 0.8s ease forwards;
+    }
+
+    @keyframes tearFall {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(20px); opacity: 0; }
     }
   </style>
 </head>
@@ -100,8 +125,21 @@
       setTimeout(() => el.classList.remove("bounce"), 500);
     },
     C: (el) => {
+      // claustrophobic squish
       el.classList.add("claustrophobic");
-      setTimeout(() => el.classList.remove("claustrophobic"), 600);
+      el.classList.add("trembling");
+
+      // cry animation (tear drop)
+      const tear = document.createElement("div");
+      tear.className = "tear";
+      tear.textContent = "💧";
+      el.parentElement.appendChild(tear);
+
+      setTimeout(() => {
+        el.classList.remove("claustrophobic");
+        el.classList.remove("trembling");
+        tear.remove();
+      }, 900);
     },
     D: (el) => {
       el.style.transition = "opacity 0.5s ease";
@@ -122,7 +160,7 @@
 
     div.addEventListener("click", () => {
       if (effects[letter]) {
-        effects[letter](span); // pass in the actual letter text element
+        effects[letter](span);
       } else {
         console.log(`${letter} has no effect yet.`);
       }
