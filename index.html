@@ -40,11 +40,11 @@
       cursor: pointer;
       position: relative;
       user-select: none;
+      transition: transform 0.3s ease;
     }
 
     .letter-text {
       font-size: 1.5rem;
-      transition: transform 0.3s ease;
     }
 
     .letter:hover {
@@ -62,19 +62,19 @@
       100% { transform: translateY(0); }
     }
 
-    @keyframes claustrophobic {
-      0% { transform: scale(1); }
-      30% { transform: scale(0.3); }
-      60% { transform: scale(0.1); }
-      100% { transform: scale(1); }
-    }
-
     @keyframes tremble {
       0% { transform: translate(0, 0); }
       25% { transform: translate(-1px, 1px); }
       50% { transform: translate(1px, -1px); }
       75% { transform: translate(-1px, 0); }
       100% { transform: translate(0, 1px); }
+    }
+
+    @keyframes claustro-shrink {
+      0% { transform: scale(1); }
+      30% { transform: scale(0.3); }
+      60% { transform: scale(0.1); }
+      100% { transform: scale(1); }
     }
 
     .ascend {
@@ -85,11 +85,11 @@
       animation: bounce 0.4s ease;
     }
 
-    .claustrophobic {
-      animation: claustrophobic 0.6s ease;
+    .claustro-box {
+      animation: claustro-shrink 0.6s ease;
     }
 
-    .trembling {
+    .tremble-text {
       animation: tremble 0.1s infinite;
     }
 
@@ -126,21 +126,22 @@
       setTimeout(() => el.classList.remove("bounce"), 500);
     },
     C: (textEl, boxEl) => {
-      // Squish the text
-      textEl.classList.add("claustrophobic");
+      // Shrink box
+      boxEl.classList.add("claustro-box");
 
-      // Shake the whole tile
-      boxEl.classList.add("trembling");
+      // Tremble letter
+      textEl.classList.add("tremble-text");
 
-      // Crying tear emoji
+      // Cry
       const tear = document.createElement("div");
       tear.className = "tear";
       tear.textContent = "💧";
       boxEl.appendChild(tear);
 
+      // Clean up
       setTimeout(() => {
-        textEl.classList.remove("claustrophobic");
-        boxEl.classList.remove("trembling");
+        boxEl.classList.remove("claustro-box");
+        textEl.classList.remove("tremble-text");
         tear.remove();
       }, 900);
     },
@@ -165,7 +166,7 @@
     div.addEventListener("click", () => {
       if (effects[letter]) {
         if (letter === "C") {
-          effects.C(span, div); // pass both text and box
+          effects.C(span, div); // pass both elements
         } else {
           effects[letter](span);
         }
