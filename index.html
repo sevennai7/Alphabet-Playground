@@ -53,7 +53,7 @@
       background: #333;
     }
 
-    /* A-D Animations */
+    /* Animations */
     @keyframes ascend {
       0% { transform: translateY(0); opacity: 1; }
       100% { transform: translateY(-100px); opacity: 0; }
@@ -80,32 +80,13 @@
       100% { transform: scale(1); }
     }
 
-    .ascend { animation: ascend 0.6s ease forwards; }
-    .bounce { animation: bounce 0.4s ease; }
-    .claustro-box { animation: claustro-shrink 0.6s ease; }
-    .tremble-text { animation: tremble 0.1s infinite; }
-
-    .tear {
-      position: absolute;
-      bottom: -4px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #00aaff;
-      opacity: 1;
-      animation: tearFall 0.8s ease forwards;
-    }
-
     @keyframes tearFall {
       0% { transform: translate(-50%, 0); opacity: 1; }
       100% { transform: translate(-50%, 20px); opacity: 0; }
     }
 
-    /* E to L animations */
     @keyframes elevate {
-      0% { transform: translateY(0); opacity: 1; color: white; }
+      0% { transform: translateY(0); color: white; }
       50% { transform: translateY(-20px); color: gold; }
       100% { transform: translateY(0); color: #fff700; }
     }
@@ -114,7 +95,6 @@
       0% { transform: rotate(0); color: white; }
       25% { transform: rotate(5deg); color: red; }
       50% { transform: rotate(-5deg); }
-      75% { transform: rotate(5deg); }
       100% { transform: rotate(0); }
     }
 
@@ -153,6 +133,10 @@
       100% { transform: rotate(1080deg) scale(0); opacity: 0; }
     }
 
+    .ascend { animation: ascend 0.6s ease forwards; }
+    .bounce { animation: bounce 0.4s ease; }
+    .claustro-box { animation: claustro-shrink 0.6s ease; }
+    .tremble-text { animation: tremble 0.1s infinite; }
     .elevate { animation: elevate 0.6s ease; }
     .frustrate { animation: frustration 0.6s ease; }
     .gravity { animation: gravity 0.5s ease forwards; }
@@ -161,6 +145,19 @@
     .jump { animation: jump 0.4s ease; }
     .kaleido { animation: kaleido 1s ease; }
     .spiral { animation: spiral 1s ease forwards; }
+
+    .tear {
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #00aaff;
+      opacity: 1;
+      animation: tearFall 0.8s ease forwards;
+    }
   </style>
 </head>
 <body>
@@ -259,12 +256,9 @@
     div.appendChild(span);
 
     div.addEventListener("click", () => {
-      if (effects[letter]) {
-        if (letter === "C") {
-          effects.C(span, div);
-        } else {
-          effects[letter](span);
-        }
+      const effect = effects[letter];
+      if (effect) {
+        effect(span, div); // all effects now accept both span and div
       } else {
         const msg = `⚠️ Letter "${letter}" has no effect yet. Add it soon!`;
         console.log(msg);
