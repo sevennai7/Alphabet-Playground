@@ -14,6 +14,7 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
+      overflow: hidden;
     }
 
     h1 {
@@ -27,6 +28,7 @@
       grid-template-columns: repeat(6, 60px);
       grid-gap: 15px;
       margin-top: 30px;
+      transition: all 0.3s ease;
     }
 
     .letter {
@@ -39,13 +41,36 @@
       border-radius: 10px;
       font-size: 1.5rem;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
       user-select: none;
+      position: relative;
     }
 
     .letter:hover {
       background: #444;
       transform: scale(1.1);
+    }
+
+    .ascend {
+      animation: ascendAnim 0.6s ease forwards;
+    }
+
+    @keyframes ascendAnim {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-100px); opacity: 0; }
+    }
+
+    .bounce {
+      animation: bounceAnim 0.4s ease;
+    }
+
+    @keyframes bounceAnim {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-25px); }
+    }
+
+    .claustrophobic {
+      transform: scale(0.2);
     }
   </style>
 </head>
@@ -56,30 +81,31 @@
 
 <script>
   const effects = {
-    A: () => {
+    A: (el) => {
       console.log("A = Ascend");
-      document.body.style.transform = "translateY(-20px)";
-      setTimeout(() => document.body.style.transform = "", 500);
+      el.classList.add("ascend");
+      setTimeout(() => el.classList.remove("ascend"), 800);
     },
-    B: () => {
+    B: (el) => {
       console.log("B = Bounce");
-      const el = document.getElementById("grid");
-      el.style.transform = "translateY(-20px)";
-      setTimeout(() => el.style.transform = "translateY(20px)", 100);
-      setTimeout(() => el.style.transform = "", 200);
+      el.classList.add("bounce");
+      setTimeout(() => el.classList.remove("bounce"), 500);
     },
     C: () => {
       console.log("C = Claustrophobic");
-      document.body.style.padding = "50px";
-      setTimeout(() => document.body.style.padding = "", 600);
+      document.getElementById("grid").classList.add("claustrophobic");
+      setTimeout(() => {
+        document.getElementById("grid").classList.remove("claustrophobic");
+      }, 800);
     },
-    D: () => {
+    D: (el) => {
       console.log("D = Disappear");
-      const grid = document.getElementById("grid");
-      grid.style.opacity = "0";
-      setTimeout(() => grid.style.opacity = "1", 800);
-    },
-    // Add more effects here...
+      el.style.transition = "opacity 0.5s ease";
+      el.style.opacity = "0";
+      setTimeout(() => {
+        el.style.opacity = "1";
+      }, 1000);
+    }
   };
 
   const grid = document.getElementById("grid");
@@ -91,7 +117,7 @@
     div.textContent = letter;
     div.onclick = () => {
       if (effects[letter]) {
-        effects[letter]();
+        effects[letter](div);
       } else {
         console.log(`${letter} = [UNDEFINED EFFECT]`);
       }
